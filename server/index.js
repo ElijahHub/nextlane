@@ -9,6 +9,7 @@ import postRoutes from "./routes/posts.routes.js";
 import commentRoutes from "./routes/comments.routes.js";
 import likeRoutes from "./routes/likes.routes.js";
 import relationshipRoutes from "./routes/relationship.routes.js";
+import storyRoutes from "./routes/stories.routes.js";
 
 const app = express();
 
@@ -51,6 +52,7 @@ app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/likes", likeRoutes);
 app.use("/api/relationships", relationshipRoutes);
+app.use("/api/stories", storyRoutes);
 
 app.listen(8000, () => {
   console.log("Api Working");
