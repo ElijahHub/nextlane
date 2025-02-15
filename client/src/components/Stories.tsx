@@ -17,7 +17,7 @@ export default function Stories() {
   const authContext = useContext(AuthContext);
 
   const { isLoading, error, data } = useQuery({
-    queryKey: ["stories"],
+    queryKey: ["story"],
     queryFn: async () => {
       const res = await makeRequest.get("/stories");
       return res.data;

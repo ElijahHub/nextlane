@@ -4,6 +4,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 import { makeRequest } from "../utils";
 import { DarkModeContext } from "../context/darkMode.context";
+import { updateStyle } from "../styles";
 
 interface StoryType {
   desc: string;
@@ -54,8 +55,16 @@ export default function AddStory({
 
   return (
     <div className="fixed top-0 left-0 w-[100vw] h-[100vh] bg-[rgba(0,0,0,0.5)] flex items-center justify-center z-[999] ">
-      <div className={` hide-scrollbar`}>
-        <h1 className="text-gray-100 text-[20px] md:text-[16px] ">
+      <div
+        className={` hide-scrollbar relative m-auto w-full md:w-[30%]  p-[50px] z-[999] flex flex-col gap-[20px] shadow-[0px_0px_15px_1px_rgba(0,0,0,0.09)] overflow-scroll  ${
+          darkContext?.darkMode ? "bg-[var(--dark-bg)]" : "bg-[var(--bg)]"
+        } `}
+      >
+        <h1
+          className={`text-[20px] md:text-[16px] ${
+            darkContext?.darkMode ? "text-gray-100" : "text-black"
+          } `}
+        >
           Add Your Story
         </h1>
 
@@ -67,11 +76,13 @@ export default function AddStory({
             >
               <span>Story Image</span>
               <div className=" relative">
-                <img
-                  //   src={`/upload/${user.cover_pic}`}
-                  alt=""
-                  className="w-full h-[100px] object-cover"
-                />
+                {storyImg && (
+                  <img
+                    src={URL.createObjectURL(storyImg)}
+                    alt=""
+                    className="w-full h-[100px] object-cover"
+                  />
+                )}
                 <CloudUploadIcon className="absolute top-0 bottom-0 left-0 right-0 m-auto text-[30px] text-gray-100 cursor-pointer " />
               </div>
             </label>
@@ -84,8 +95,6 @@ export default function AddStory({
               }
             />
           </div>
-          <textarea name="" id=""></textarea>
-
           <button
             onClick={handlePost}
             className="border-none p-[10px] cursor-pointer text-white bg-[#5271ff] "
