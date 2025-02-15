@@ -1,8 +1,9 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { AuthContext } from "../context/auth.context";
 import { makeRequest } from "../utils";
+import AddStory from "./AddStory";
 
 interface StoryType {
   id: number;
@@ -11,6 +12,8 @@ interface StoryType {
 }
 
 export default function Stories() {
+  const [openUpdate, setOpenUpdate] = useState(false);
+
   const authContext = useContext(AuthContext);
 
   const { isLoading, error, data } = useQuery({
@@ -34,7 +37,10 @@ export default function Stories() {
           {authContext?.currentUser?.name}
         </span>
 
-        <button className="absolute bottom-0 left-0 right-0 top-0 md:bottom-[40px] md:left-[10px] flex items-center justify-between text-white bg-[#5271ff] border-none rounded-[50%] w-[30px] h-[30px] cursor-pointer text-[30px] ">
+        <button
+          className="absolute bottom-0 left-0 right-0 top-0 md:bottom-[40px] md:left-[10px] flex items-center justify-between text-white bg-[#5271ff] border-none rounded-[50%] w-[30px] h-[30px] cursor-pointer text-[30px]"
+          onClick={() => setOpenUpdate(true)}
+        >
           +
         </button>
       </div>
@@ -58,6 +64,7 @@ export default function Stories() {
               </span>
             </div>
           ))}
+      {openUpdate && <AddStory setOpenUpdate={setOpenUpdate} />}
     </div>
   );
 }

@@ -47,15 +47,12 @@ export default function Update({ setOpenUpdate, user }: UpdateProps) {
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-
     let coverUrl;
     let profileUrl;
 
     coverUrl = cover ? await upload(cover) : user.cover_pic;
     profileUrl = profile ? await upload(profile) : user.profile_pic;
-
     mutation.mutate({ ...texts, profile_pic: profileUrl, cover_pic: coverUrl });
-
     setOpenUpdate(false);
   };
 
