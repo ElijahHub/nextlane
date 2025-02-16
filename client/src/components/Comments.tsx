@@ -73,7 +73,7 @@ export default function Comments({ postId }: { postId: number }) {
             <div className={comment}>
               <img src={`/upload/${com.profile_pic}`} alt="" className={img} />
               <div className={info}>
-                <span className="font-medium uppercase">{com.name}</span>
+                <span className="font-medium uppercase">{com.username}</span>
                 <p className={p}>{com.desc}</p>
               </div>
               <span className={date}>{moment(com.createdAt).fromNow()}</span>

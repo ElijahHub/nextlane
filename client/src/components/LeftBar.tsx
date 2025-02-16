@@ -32,12 +32,12 @@ export default function LeftBar() {
           <div className="flex items-center gap-[10px]">
             <img
               src={`/upload/${authContext?.currentUser?.profile_pic}`}
-              alt={authContext?.currentUser?.name}
+              alt={authContext?.currentUser?.username}
               className="w-[30px] h-[30px] rounded-[50%] object-cover "
             />
           </div>
           <span className="text-[14px] uppercase ">
-            {authContext?.currentUser?.name}
+            {authContext?.currentUser?.username}
           </span>
         </div>
 

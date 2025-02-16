@@ -74,7 +74,9 @@ export default function Navbar() {
             alt={authContext?.currentUser?.username}
             className={img}
           />
-          <span className="uppercase">{authContext?.currentUser?.name}</span>
+          <span className="uppercase">
+            {authContext?.currentUser?.username}
+          </span>
         </Link>
       </div>
     </div>

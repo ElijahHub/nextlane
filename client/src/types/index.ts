@@ -16,7 +16,7 @@ export interface AuthFormProps {
 
 export interface PostProps {
   id: number;
-  name: string;
+  username: string;
   desc: string;
   img: string;
   profile_pic: string;
@@ -43,7 +43,7 @@ export interface UpdateProps {
 }
 
 export interface Comment {
-  name: string;
+  username: string;
   desc: string;
   profile_pic: string;
   createdAt: string;

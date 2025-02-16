@@ -76,7 +76,7 @@ export default function Post({ post }: { post: PostProps }) {
                 to={`/profile/${post.userId}`}
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <span className="font-medium uppercase">{post.name}</span>
+                <span className="font-medium uppercase">{post.username}</span>
               </Link>
               <span className="text-[12px]">
                 {" "}
