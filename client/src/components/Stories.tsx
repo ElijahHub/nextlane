@@ -7,7 +7,7 @@ import AddStory from "./AddStory";
 
 interface StoryType {
   id: number;
-  name: string;
+  username: string;
   img: string;
 }
 
@@ -34,7 +34,7 @@ export default function Stories() {
         />
 
         <span className="hidden md:block absolute bottom-[10px] left-[10px]  text-white font-medium ">
-          {authContext?.currentUser?.name}
+          {authContext?.currentUser?.username}
         </span>
 
         <button
@@ -60,7 +60,7 @@ export default function Stories() {
                 className="w-full h-full object-cover"
               />
               <span className="hidden md:block absolute bottom-[10px] left-[10px]  text-white font-medium ">
-                {story.name}
+                {story.username}
               </span>
             </div>
           ))}
