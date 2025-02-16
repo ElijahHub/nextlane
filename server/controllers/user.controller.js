@@ -43,20 +43,12 @@ export const updateUser = (req, res) => {
   });
 };
 
-export const getOtherUsers = (req, res) => {
-  const token = req.cookies.accessToken;
-  if (!token) return res.status(401).json("Not authenticated");
+export const getUsers = (req, res) => {
+  const query = "SELECT id, username, profile_pic FROM users ";
 
-  jwt.verify(token, "secretkey", (err, userInfo) => {
-    if (err) return res.status(403).json("Token is not valid");
-
-    const query =
-      "SELECT u.id, username, profile_pic FROM users AS u LEFT JOIN relationship AS r ON (u.id = r.followedUserId) WHERE NOT r.followerUserId = ? AND NOT u.id = ?";
-
-    db.query(query, [userInfo.id, userInfo.id], (err, data) => {
-      if (err) return res.status(403).json(err);
-      return res.status(200).json(data);
-    });
+  db.query(query, [], (err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.status(200).json(data);
   });
 };
 

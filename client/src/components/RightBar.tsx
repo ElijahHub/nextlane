@@ -4,6 +4,7 @@ import { rightBarStyle } from "../styles";
 import { DarkModeContext } from "../context/darkMode.context";
 import { useQuery } from "@tanstack/react-query";
 import { makeRequest } from "../utils";
+import { AuthContext } from "../context/auth.context";
 
 type SuggetionType = {
   username: string;
@@ -12,6 +13,7 @@ type SuggetionType = {
 
 export default function RightBar() {
   const darkContext = useContext(DarkModeContext);
+  const context = useContext(AuthContext);
 
   const { rightBar, item, span, p } = rightBarStyle(darkContext?.darkMode);
 
@@ -34,10 +36,22 @@ export default function RightBar() {
   } = useQuery({
     queryKey: ["otherUsers"],
     queryFn: async () => {
-      const res = await makeRequest.get("/users/others");
+      const res = await makeRequest.get("/users/all");
       return res.data;
     },
   });
+
+  const { isLoading: rIsLoading, data: relationshipData } = useQuery({
+    queryKey: ["follow"],
+    queryFn: async () => {
+      const res = await makeRequest.get(
+        `/relationships/following?followerUsedId=${context?.currentUser?.id}`
+      );
+      return res.data;
+    },
+  });
+
+  console.log(relationshipData, context?.currentUser?.id);
 
   return (
     <div className={`hide-scrollbar ${rightBar} `}>
