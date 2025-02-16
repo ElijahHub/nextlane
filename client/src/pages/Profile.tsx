@@ -46,7 +46,6 @@ export default function Profile() {
   });
 
   const queryClient = useQueryClient();
-
   const mutation = useMutation<void, Error, any>({
     mutationFn: async (following) => {
       if (following)
