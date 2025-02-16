@@ -2,10 +2,11 @@ import { useContext, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
-import { makeRequest } from "../utils";
+import { makeRequest, upload } from "../utils";
 import { UpdateProps, User } from "../types";
 import { updateStyle } from "../styles";
 import { DarkModeContext } from "../context/darkMode.context";
+import { AuthContext } from "../context/auth.context";
 
 export default function Update({ setOpenUpdate, user }: UpdateProps) {
   const textData: User = {
@@ -21,10 +22,10 @@ export default function Update({ setOpenUpdate, user }: UpdateProps) {
   const [texts, setTexts] = useState(textData);
 
   const darkContext = useContext(DarkModeContext);
+  const context = useContext(AuthContext);
   const { wrapper, input } = updateStyle(darkContext?.darkMode);
 
   const queryClient = useQueryClient();
-
   const mutation = useMutation<void, Error, any>({
     mutationFn: async (user) => {
       return makeRequest.put("/users", user);
@@ -34,17 +35,6 @@ export default function Update({ setOpenUpdate, user }: UpdateProps) {
     },
   });
 
-  const upload = async (file: File) => {
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      const res = await makeRequest.post("/upload", formData);
-      return res.data;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     let coverUrl;
@@ -53,6 +43,14 @@ export default function Update({ setOpenUpdate, user }: UpdateProps) {
     coverUrl = cover ? await upload(cover) : user.cover_pic;
     profileUrl = profile ? await upload(profile) : user.profile_pic;
     mutation.mutate({ ...texts, profile_pic: profileUrl, cover_pic: coverUrl });
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        ...context?.currentUser,
+        profile_pic: profileUrl,
+        cover_pic: coverUrl,
+      })
+    );
     setOpenUpdate(false);
   };
 
@@ -60,6 +58,13 @@ export default function Update({ setOpenUpdate, user }: UpdateProps) {
     setTexts({ ...texts, [e.target.name]: [e.target.value] });
   };
 
+  const coverImg = cover
+    ? URL.createObjectURL(cover)
+    : `/upload/${user.cover_pic}`;
+
+  const profileImg = profile
+    ? URL.createObjectURL(profile)
+    : `/upload/${user.profile_pic}`;
   return (
     <div className="fixed top-0 left-0 w-[100vw] h-[100vh] bg-[rgba(0,0,0,0.5)] flex items-center justify-center z-[999]  ">
       <div className={` hide-scrollbar ${wrapper}`}>
@@ -76,7 +81,7 @@ export default function Update({ setOpenUpdate, user }: UpdateProps) {
               <span>Cover Picture</span>
               <div className=" relative">
                 <img
-                  src={`/upload/${user.cover_pic}`}
+                  src={coverImg}
                   alt=""
                   className="w-full h-[100px] object-cover"
                 />
@@ -97,7 +102,7 @@ export default function Update({ setOpenUpdate, user }: UpdateProps) {
               <span>Profile Picture</span>
               <div className="relative">
                 <img
-                  src={`/upload/${user.profile_pic}`}
+                  src={profileImg}
                   alt=""
                   className="w-full h-[100px] object-cover"
                 />

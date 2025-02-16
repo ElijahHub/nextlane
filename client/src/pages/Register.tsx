@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 
 import { AuthForm } from "../components";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/auth.context";
 
 export default function Register() {
   const inputData = {
@@ -42,6 +44,10 @@ export default function Register() {
 
   const [error, setError] = useState<string | null>(null);
 
+  const navigate = useNavigate();
+
+  const context = useContext(AuthContext);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
@@ -51,6 +57,12 @@ export default function Register() {
 
     try {
       await axios.post("http://localhost:8000/api/auth/register", inputs);
+      const loginInput = {
+        username: inputs.username,
+        password: inputs.password,
+      };
+      await context?.login(loginInput);
+      navigate("/");
     } catch (error: any) {
       setError(error.response.data);
     }

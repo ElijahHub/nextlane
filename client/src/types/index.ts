@@ -71,3 +71,8 @@ export interface DarkModeContextType {
   darkMode: boolean;
   toggle(): void;
 }
+
+export interface StoryType {
+  desc: string;
+  storyImg: File | null;
+}

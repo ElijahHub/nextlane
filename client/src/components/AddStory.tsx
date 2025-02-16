@@ -2,14 +2,9 @@ import { useContext, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
-import { makeRequest } from "../utils";
+import { makeRequest, upload } from "../utils";
 import { DarkModeContext } from "../context/darkMode.context";
-import { updateStyle } from "../styles";
-
-interface StoryType {
-  desc: string;
-  storyImg: File | null;
-}
+import { StoryType } from "../types";
 
 export default function AddStory({
   setOpenUpdate,
@@ -34,17 +29,6 @@ export default function AddStory({
       queryClient.invalidateQueries({ queryKey: ["story"] });
     },
   });
-
-  const upload = async (file: File) => {
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      const res = await makeRequest.post("/upload", formData);
-      return res.data;
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const handlePost = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -75,7 +59,7 @@ export default function AddStory({
               className="flex flex-col gap-[10px] text-gray-500 text-[14px] "
             >
               <span>Story Image</span>
-              <div className=" relative">
+              <div className=" relative h-[100px] ">
                 {storyImg && (
                   <img
                     src={URL.createObjectURL(storyImg)}
